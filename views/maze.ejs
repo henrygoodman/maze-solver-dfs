@@ -1,0 +1,18 @@
+<link rel="stylesheet" type="text/css" href="stylesheets/mazing.css" />
+<script src="javascripts/maze_builder.js"></script>
+<div id="maze_container"></div>
+
+<% if (w && h) { %>
+  <script>
+    let Maze = new MazeBuilder(<%=w%>, <%=h%>);
+    Maze.display("maze_container");
+  </script>
+<% } %>
+
+<div id="solve-btn">
+  <button onclick="Maze.printAllPaths(Maze.getEntryPos(), Maze.getExitPos()); this.disabled=true;">Solve</button>
+</div>
+
+
+
+  
