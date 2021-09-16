@@ -6,7 +6,13 @@
 
   #maze div div.finalpath {
     position: relative;
-    background-color: red;
+    background-color: rgb(255, 0, 0);
+    background-size: 8em 8em;
+  }
+
+  #maze div div.popping {
+    position: relative;
+    background-color: rgb(253, 192, 156);
     background-size: 8em 8em;
   }
 

@@ -28,8 +28,7 @@ class MazeBuilder {
               }
             } else if (c % 2 == 0) {
               this.maze[r][c] = ["wall"];
-            }
-
+            } 
         }
       });
 
@@ -50,6 +49,18 @@ class MazeBuilder {
     });
     //start partitioning
     this.partition(1, this.height - 1, 1, this.width - 1);
+
+    this.maze.forEach((row, r) => {
+      row.forEach((cell, c) => {
+        if (this.isValidCell(r,c)) {
+          this.maze[r][c] = [r,c]
+        }
+      });
+    });
+  }
+
+  isValidCell(y,x) {
+    return (this.maze[y][x] != "wall" &&  this.maze[y][x] != "door,exit" && this.maze[y][x] != "door,entrance")
   }
 
   setEntryPos(x, y) {
@@ -192,9 +203,7 @@ class MazeBuilder {
           validMoves.push([y + off1, x + off2]);
           return validMoves;
         }
-
-        var state = this.getClassName(y + off1, x + off2);
-        if (!state) {
+        if (this.isValidCell(y+off1, x+off2)) {
           validMoves.push([y + off1, x + off2]);
         }
       }
@@ -204,6 +213,7 @@ class MazeBuilder {
   }
 
   printAllPaths(s, d) {
+
     var isVisited = new Array(2 * this.height + 1);
     for (var i = 0; i < isVisited.length; i++) {
       isVisited[i] = new Array(2 * this.width + 1);
@@ -216,28 +226,38 @@ class MazeBuilder {
     }
 
     let pathList = [];
+    let animationList = [];
+    this.flag = false;
 
-    pathList.push([s[0], s[1]]);
-    this.printAllPathsUtil(s, d, isVisited, pathList);
+    pathList.push( [s[0], s[1]] );
+    animationList.push( [[s[0], s[1]], 1] );
+    this.printAllPathsUtil(s, d, isVisited, pathList, animationList);
+
+    this.animate(animationList)
+    this.printMaze()
 
   }
 
-  printAllPathsUtil(u, d, isVisited, localPathList) {
+  printAllPathsUtil(u, d, isVisited, localPathList, localAnimationList) {
     var ypos = u[0];
     var xpos = u[1];
 
     if (ypos == d[0] && xpos == d[1]) {
-      this.highlightPath(localPathList);
+      //this.highlightPath(localPathList);
+      this.flag = true;
       return;
     }
 
     isVisited[ypos][xpos] = "true";
 
     this.getAdj(ypos, xpos).forEach(adj => {
-      if (isVisited[adj[0]][adj[1]] == "false") {
+      if (!this.flag && isVisited[adj[0]][adj[1]] == "false") {
         localPathList.push(adj);
-        this.printAllPathsUtil(adj, d, isVisited, localPathList);
+        localAnimationList.push([adj, 1]);
+        this.printAllPathsUtil(adj, d, isVisited, localPathList, localAnimationList);
+        if(this.flag) return
         localPathList.splice(localPathList.indexOf(adj), 1);
+        localAnimationList.push([adj, 0])
       }
     });
 
@@ -252,12 +272,47 @@ class MazeBuilder {
     }
   }
 
+  printMaze() {
+    console.log(this.maze)
+  }
+
   printPath(path) {
     document.write("\nSTART: ");
     for (var i = 0; i < path.length; i += 1) {
       document.write("(" + path[i][0] + "," + path[i][1] + ")->");
     }
     document.write("END \n");
+  }
+
+  animate(list) {
+    var count = 0;
+    var index = 0;
+    var thisMaze = this.maze;
+    console.log(list)
+
+    function step() {
+      var cell = list[index];
+      var push = cell[1];
+      var ypos = cell[0][0];
+      var xpos = cell[0][1];
+      var id = thisMaze[ypos][xpos].join(" ")
+      var div = document.getElementById(id)
+
+      //Update the class name of the given cell depending on value of push.
+      if (push == 1) {
+        div.className = "finalpath"
+      } else {
+        div.className = "popping"
+      }
+
+      if (index < list.length-2) {
+        count++;
+        index++;
+        window.requestAnimationFrame(step)
+      }
+    }
+    window.requestAnimationFrame(step)
+    //this.display("maze_container");
   }
 
   highlightPath(path) {
@@ -289,6 +344,7 @@ class MazeBuilder {
         let cellDiv = document.createElement("div");
         if (cell) {
           cellDiv.className = cell.join(" ");
+          cellDiv.id = cell.join(" ");
         }
         rowDiv.appendChild(cellDiv);
       });
