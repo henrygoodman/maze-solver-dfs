@@ -288,7 +288,6 @@ class MazeBuilder {
     var count = 0;
     var index = 0;
     var thisMaze = this.maze;
-    console.log(list)
 
     function step() {
       var cell = list[index];
