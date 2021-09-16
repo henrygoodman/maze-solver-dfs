@@ -7,8 +7,8 @@
         {
             "type": "pwa-chrome",
             "request": "launch",
-            "name": "Open index.html",
-            "file": "c:\\Users\\user\\Desktop\\maze-solver-dfs\\views\\index.html"
+            "name": "Open index",
+            "url": "localhost:3000"
         }
     ]
 }

@@ -1,9 +1,17 @@
+<link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+
+<div id="top">
+	<h1>Maze Generator and Solver</h1>
+	<h2>Created by Henry Goodman: https://github.com/henrygoodman/maze-solver-dfs</h2>
+	<h3>Select size dimensions of maze to begin (The bigger the size the longer the processing time will be)</h3>
+</div>
+
 <form action="/maze" method="POST">
 	<label for="width">Width:</label>
-	<input id="width" type="text" name="width" />
-  <br></br>
+	<input id="width" type="number" min="3" max="80" name="width" />
+  <br>
 	<label for="height">Height:</label>
-	<input id="height" type="text" name="height" />
-  <br></br>
-	<input type="submit" value="Submit" />
+	<input id="height" type="number" min="3" max="80" name="height" />
+  <br>
+	<input type="submit" value="Generate"/>
 </form>

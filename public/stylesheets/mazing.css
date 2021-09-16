@@ -3,6 +3,7 @@
     display: inline-block;
   }
 
+
   #maze div div.finalpath {
     position: relative;
     background-color: red;
@@ -15,17 +16,6 @@
     background-size: 8em 8em;
   }
 
-  #maze div div.currentpath {
-    position: relative;
-    background-color: green;
-    background-size: 8em 8em;
-  }
-
-  #maze div div.current {
-    position: relative;
-    background-color: blue;
-    background-size: 8em 8em;
-  }
   
   #maze div {
     display: flex;
