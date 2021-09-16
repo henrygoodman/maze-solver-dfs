@@ -234,7 +234,6 @@ class MazeBuilder {
     this.printAllPathsUtil(s, d, isVisited, pathList, animationList);
 
     this.animate(animationList)
-    this.printMaze()
 
   }
 
@@ -243,7 +242,6 @@ class MazeBuilder {
     var xpos = u[1];
 
     if (ypos == d[0] && xpos == d[1]) {
-      //this.highlightPath(localPathList);
       this.flag = true;
       return;
     }
@@ -311,7 +309,6 @@ class MazeBuilder {
       }
     }
     window.requestAnimationFrame(step)
-    //this.display("maze_container");
   }
 
   highlightPath(path) {
