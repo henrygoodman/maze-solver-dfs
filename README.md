@@ -1,4 +1,7 @@
 # maze-solver-dfs
+
+https://mazesolverdfs.herokuapp.com
+
 Maze solver using dfs algorithm visualization
 
 How to run:
