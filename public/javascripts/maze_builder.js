@@ -1,5 +1,14 @@
 // Original JavaScript code by Chirp Internet: chirpinternet.eu
 // Please acknowledge use of this code by including this header.
+
+
+// This class builds a maze and hosts all the functionality for algorithms to solve it. 
+// Could refactor to separate the classes into the building algorithm and solving classes. 
+
+// Maze structure is a 2d array with the class name of the cell type. CSS interprets and draws cells based on these cell types.
+// types are [wall, door entrance, door exit, and y,x] where y,x is a valid maze square.
+// Maze instansiation will also set the class ID of valid maze squares to y,x. (this will help keep track of cells when changing class names in animation)
+
 class MazeBuilder {
 
   constructor(width, height) {
@@ -212,7 +221,7 @@ class MazeBuilder {
     return validMoves;
   }
 
-  printAllPaths(s, d) {
+  printAllPathsDFS(s, d) {
 
     var isVisited = new Array(2 * this.height + 1);
     for (var i = 0; i < isVisited.length; i++) {
@@ -231,13 +240,13 @@ class MazeBuilder {
 
     pathList.push( [s[0], s[1]] );
     animationList.push( [[s[0], s[1]], 1] );
-    this.printAllPathsUtil(s, d, isVisited, pathList, animationList);
+    this.printAllPathsDFSUtil(s, d, isVisited, pathList, animationList);
 
     this.animate(animationList)
 
   }
 
-  printAllPathsUtil(u, d, isVisited, localPathList, localAnimationList) {
+  printAllPathsDFSUtil(u, d, isVisited, localPathList, localAnimationList) {
     var ypos = u[0];
     var xpos = u[1];
 
@@ -252,7 +261,7 @@ class MazeBuilder {
       if (!this.flag && isVisited[adj[0]][adj[1]] == "false") {
         localPathList.push(adj);
         localAnimationList.push([adj, 1]);
-        this.printAllPathsUtil(adj, d, isVisited, localPathList, localAnimationList);
+        this.printAllPathsDFSUtil(adj, d, isVisited, localPathList, localAnimationList);
         if(this.flag) return
         localPathList.splice(localPathList.indexOf(adj), 1);
         localAnimationList.push([adj, 0])
@@ -309,13 +318,6 @@ class MazeBuilder {
       }
     }
     window.requestAnimationFrame(step)
-  }
-
-  highlightPath(path) {
-    path.forEach(cell => {
-      this.highlight(cell[0], cell[1], "finalpath");
-    });
-    this.display("maze_container");
   }
 
   display(id) {
